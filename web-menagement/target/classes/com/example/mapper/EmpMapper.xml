@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.EmpMapper">
+
+
+    <!--生成实体类，xml配置文件让AI写-->
+    <select id="getEmpCount" resultType="long">
+        SELECT COUNT(*)
+        FROM emp e
+        LEFT JOIN dept d ON e.dept_id = d.id
+        <where>
+            <if test="name != null and name != ''">
+                AND e.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="gender != null">
+                AND e.gender = #{gender}
+            </if>
+            <if test="beginDate != null">
+                AND e.entry_date &gt;= #{beginDate}
+            </if>
+            <if test="endDate != null">
+                AND e.entry_date &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="getEmpList" resultType="com.example.pojo.Emp">
+        SELECT e.*, d.name deptName
+        FROM emp e
+        LEFT JOIN dept d ON e.dept_id = d.id
+        <where>
+            <if test="param.name != null and param.name != ''">
+                AND e.name LIKE CONCAT('%', #{param.name}, '%')
+            </if>
+            <if test="param.gender != null">
+                AND e.gender = #{param.gender}
+            </if>
+            <if test="param.beginDate != null">
+                AND e.entry_date &gt;= #{param.beginDate}
+            </if>
+            <if test="param.endDate != null">
+                AND e.entry_date &lt;= #{param.endDate}
+            </if>
+        </where>
+        ORDER BY e.update_time DESC
+        LIMIT #{offset}, #{param.pageSize}
+    </select>
+<!--    查询回显-->
+    <select id="selectById" resultType="com.example.pojo.Emp">
+        SELECT e.*, d.name deptName
+        FROM emp e
+        LEFT JOIN dept d ON e.dept_id = d.id
+        WHERE e.id = #{id}
+    </select>
+
+
+    <insert id="insert" parameterType="com.example.pojo.Emp" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO emp(
+            username, name, gender, phone, job, salary,
+            image, entry_date, dept_id, create_time, update_time
+        )
+        VALUES(
+                  #{username}, #{name}, #{gender}, #{phone}, #{job}, #{salary},
+                  #{image}, #{entryDate}, #{deptId}, #{createTime}, #{updateTime}
+              )
+    </insert>
+
+    <delete id="deleteByIds">
+        DELETE FROM emp WHERE id IN  <foreach collection="list" item="id" open="(" separator="," close=")">#{id}</foreach>
+    </delete>
+
+    <update id="updateById">
+        UPDATE emp
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="job != null">job = #{job},</if>
+            <if test="salary != null">salary = #{salary},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="entryDate != null">entry_date = #{entryDate},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="updateTime != null">update_time = #{updateTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update></mapper>
