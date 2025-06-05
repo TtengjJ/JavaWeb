@@ -6,6 +6,8 @@ import com.example.pojo.*;
 import com.example.service.EmpLogService;
 import com.example.service.EmpService;
 
+import com.example.utils.JwtUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
@@ -13,8 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+
+@Slf4j
 @Service
 public class EmpServiceimpl implements EmpService {
     @Autowired
@@ -34,7 +40,7 @@ public class EmpServiceimpl implements EmpService {
         long count = empMapper.getEmpCount(param);
         //查询员工信息
         List<Emp> empList = empMapper.getEmpList(offset, param);
-        return new PageResult<Emp>(count,empList);
+        return new PageResult<>(count, empList);
     }
 
     @Transactional(rollbackFor = {Exception.class})//事务管理,所有异常都回滚
@@ -77,7 +83,7 @@ public class EmpServiceimpl implements EmpService {
     }
 
     @Override
-    public Emp  getById(Integer id) {
+    public Emp getById(Integer id) {
         //查询员工基本信息
         Emp emp = empMapper.selectById(id);
         //查询员工工作经历
@@ -100,6 +106,26 @@ public class EmpServiceimpl implements EmpService {
                 empExprMapper.insert(empExpr);
             }
         }
+    }
+
+    //员工登录验证
+    @Override
+    public LoginInfo login(Emp emp) {
+        //根据用户名和密码查询用户信息
+        Emp emp1 = empMapper.selectByNamePassword(emp);
+        if(emp1 != null){
+            //登录成功,生成token返回信息
+            log.info("登录成功，员工信息：" +emp1);
+            Map<String, Object> claims = new HashMap<>();
+
+            //生成jwt令牌
+            claims.put("id", emp1.getId());
+            claims.put("username", emp1.getUsername());
+            String jwt = JwtUtils.generateToken(claims);
+
+            return new LoginInfo(emp1.getId(),emp1.getUsername(),emp1.getName(), jwt);
+        }
+        return null;
     }
 
 }

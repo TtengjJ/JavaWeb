@@ -26,4 +26,8 @@ public interface DeptMapper {
 
     @Insert("update dept set name = #{name}, update_time = #{updateTime} where id = #{id}")
     void update(Dept dept);
+
+    //查询部门下是否有员工
+    @Select("select count(*) from emp where dept_id = #{id}")
+    int findEmpByDeptId(Integer id);
 }

@@ -29,3 +29,4 @@ aliyun:
     endpoint: https://oss-cn-beijing.aliyuncs.com
     bucketName: tujavaweb-ai
     region: cn-beijing
+

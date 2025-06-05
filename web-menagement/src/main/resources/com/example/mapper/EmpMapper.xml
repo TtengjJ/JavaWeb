@@ -55,6 +55,34 @@
         WHERE e.id = #{id}
     </select>
 
+<!--    员工职业统计-->
+    <select id="empJobData" resultType="java.util.Map">
+        SELECT
+        CASE job
+        WHEN 1 THEN '班主任'
+        WHEN 2 THEN '讲师'
+        WHEN 3 THEN '学工主管'
+        WHEN 4 THEN '教研主管'
+        WHEN 5 THEN '咨询师'
+        END as jobName,  <!-- 注意与Service类型对应 -->
+        COUNT(*) as count
+        FROM emp
+        GROUP BY job
+        order by count
+    </select>
+
+    <select id="empGenderData" resultType="java.util.Map">
+        SELECT
+            CASE gender
+                WHEN 1 THEN '男'
+                WHEN 2 THEN '女'
+                END as name,
+            COUNT(*) as value
+        FROM emp
+        GROUP BY gender
+        ORDER BY gender
+    </select>
+
 
     <insert id="insert" parameterType="com.example.pojo.Emp" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO emp(
