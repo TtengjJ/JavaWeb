@@ -61,6 +61,7 @@
                  LEFT JOIN clazz c ON s.clazz_id = c.id
         WHERE s.id = #{id}
     </select>
+
     <select id="studentEducationData" resultType="java.util.Map">
         SELECT
             CASE degree

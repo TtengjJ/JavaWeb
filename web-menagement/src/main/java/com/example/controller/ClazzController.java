@@ -1,6 +1,7 @@
 package com.example.controller;
 
 
+import com.example.anno.Log;
 import com.example.pojo.Clazz;
 import com.example.pojo.ClazzPageQueryParam;
 import com.example.pojo.PageResult;
@@ -37,6 +38,7 @@ public class ClazzController {
         return Result.success(clazzList);
     }
 
+    @Log
     //根据id查询班级
     @GetMapping("/{id}")
     public Result findClazzById(@PathVariable Integer id) {
@@ -46,6 +48,7 @@ public class ClazzController {
     }
 
 
+    @Log
     //修改班级
     @PutMapping
     public Result updateClazz(@RequestBody Clazz clazz) {

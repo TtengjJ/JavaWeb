@@ -14,6 +14,7 @@ public class Clazz {
     private Integer id; //ID
     private String name; //班级名称
     private String room; //班级教室
+
     private LocalDate beginDate; //开课时间
     private LocalDate endDate; //结课时间
     private Integer masterId; //班主任

@@ -9,6 +9,8 @@ import java.util.Map;
 
 @Mapper
 public interface StudentMapper {
+
+    @MapKey("value")
      List<Map<String, Object>> studentEducationData();
 
     long getStudentCount(StudentPageQueryParam param);

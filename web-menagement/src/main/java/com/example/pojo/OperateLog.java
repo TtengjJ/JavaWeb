@@ -1,11 +1,14 @@
 package com.example.pojo;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
 @Data
 public class OperateLog {
     private Integer id; //ID
+    private String operateEmpName;
     private Integer operateEmpId; //操作人ID
     private LocalDateTime operateTime; //操作时间
     private String className; //操作类名

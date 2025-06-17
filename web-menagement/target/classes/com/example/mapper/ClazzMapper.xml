@@ -92,8 +92,12 @@
             <if test="name != null and name != ''">
                 AND name LIKE CONCAT('%', #{name}, '%')
             </if>
-            <if test="beginDate != null"> AND begin_date = #{beginDate}</if>
-            <if test="endDate != null"> AND end_date = #{endDate}</if>
+            <if test="beginDate != null ">
+                AND end_date &gt;= #{beginDate}
+            </if>
+            <if test="endDate != null ">
+                AND end_date &lt;= #{endDate}
+            </if>
         </where>
         ORDER BY update_time DESC
     </select>
@@ -121,6 +125,7 @@
         ORDER BY value
     </select>
 
+
     <select id="getClazzCount" resultType="long">
         SELECT COUNT(*)
         FROM clazz
@@ -129,10 +134,10 @@
                 AND name LIKE CONCAT('%', #{name}, '%')
             </if>
             <if test="beginDate != null">
-                AND begin_date = #{beginDate}
+                AND end_date >= #{beginDate}
             </if>
             <if test="endDate != null">
-                AND end_date = #{endDate}
+                AND end_date &lt;= #{endDate}
             </if>
         </where>
     </select>
